@@ -1,10 +1,13 @@
+
+mod libs;
+
 use std::env;
 use std::fs;
 use std::error::Error;
 use std::process::exit;
 
-use minigrep::Config;
-use minigrep::search;
+use crate::libs::Config;
+use crate::libs::search;
 
 fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents: String = fs::read_to_string(config.file)?;

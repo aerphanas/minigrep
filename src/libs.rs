@@ -1,3 +1,5 @@
+mod test;
+
 pub struct Config<'a> {
   pub query: &'a str,
   pub file: &'a str
