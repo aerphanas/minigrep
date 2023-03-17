@@ -1,3 +1,30 @@
+use std::env;
+use std::fs;
+use std::error::Error;
+use std::process::exit;
+
+use minigrep::Config;
+
 fn main() {
-    println!("Hello, world!");
+    let args: Vec<String> = env::args().collect();
+    let config = Config::new(&args).unwrap_or_else(||{
+        println!("Problem parsing arguments");
+        exit(1)
+    } );
+
+    let content = fs::read_to_string(config.file)
+        .unwrap_or_else( |x| {
+            println!("{x}");
+            exit(2)
+        });
+
+    run(config);
+}
+
+fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let contents = fs::read_to_string(config.file)?;
+
+    println!("With text:\n{contents}");
+
+    Ok(())
 }
