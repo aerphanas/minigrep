@@ -16,5 +16,5 @@ jobs:
         id: mirror
         uses: n14s/github-mirror-action@v1.1
         with:
-          origin: 'https://codeberg.org/aerphanas/minigrep.git'
+          origin: https://codeberg.org/aerphanas/minigrep.git
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
