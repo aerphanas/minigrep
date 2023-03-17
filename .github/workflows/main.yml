@@ -1,21 +1,22 @@
-name: 'mirror from codeberg'
+name: Mirror CI
 
 on:
   push:
     branches:
-        - __mirror
-  schedule:
-    - cron: '0 0 * * *'
-  workflow_dispatch:
+    - '**'
 
 jobs:
-  mirror:
+  build:
     runs-on: ubuntu-latest
-    name: mirror
+
     steps:
-      - name: mirror
-        id: mirror
-        uses: bridgelightcloud/github-mirror-action@v1
-        with:
-          origin: 'https://codeberg.org/aerphanas/minigrep.git'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: mirror-repository
+      uses: spyoungtech/mirror-action@v0.5.1
+      with:
+        REMOTE: git@codeberg.org:aerphanas/minigrep.git
+        GIT_SSH_PRIVATE_KEY: ${{ secrets.GIT_SSH_KEY }}
+        GIT_SSH_NO_VERIFY_HOST: "true"
+        DEBUG: "true"
