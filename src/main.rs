@@ -5,6 +5,14 @@ use std::process::exit;
 
 use minigrep::Config;
 
+fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let contents = fs::read_to_string(config.file)?;
+
+    println!("With text:\n{contents}");
+
+    Ok(())
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     let config = Config::new(&args).unwrap_or_else(||{
@@ -18,13 +26,8 @@ fn main() {
             exit(2)
         });
 
-    run(config);
-}
-
-fn run(config: Config) -> Result<(), Box<dyn Error>> {
-    let contents = fs::read_to_string(config.file)?;
-
-    println!("With text:\n{contents}");
-
-    Ok(())
+    if let Err(e) = run(config) {
+        println!("Application Error : {}", e);
+        exit(7)
+    }
 }
