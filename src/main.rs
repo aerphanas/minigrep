@@ -5,17 +5,27 @@ use std::fs;
 use std::error::Error;
 use std::process::exit;
 
+use libs::search_case_insensitive;
+
 use crate::libs::Config;
 use crate::libs::search;
 
 fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents: String = fs::read_to_string(config.file)?;
 
-    search(&config.query, &contents)
+    if config.case {
+        search_case_insensitive(&config.query, &contents)
         .iter()
-        .for_each(|line: &&str| {
+        .for_each(|line| {
             println!("{line}")
         });
+    } else {
+        search(&config.query, &contents)
+            .iter()
+            .for_each(|line: &&str| {
+                println!("{line}")
+            });
+    }
 
     Ok(())
 }
