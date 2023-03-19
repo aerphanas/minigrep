@@ -27,10 +27,12 @@ impl Config<'_> {
       } else {
           return None
       };
-      Some(Config {
-        query: regx,
-        file,
-        case
+
+      Some(
+        Config {
+          query: regx,
+          file,
+          case
       })
 
   }
@@ -38,22 +40,15 @@ impl Config<'_> {
 }
 
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-  let mut temp: Vec<&str> = Vec::new();
-  for line in contents.lines() {
-    if line.contains(query) {
-      temp.push(line);
-    }
-  }
-  temp
+  contents.lines()
+    .filter(|line| line.contains(&query))
+    .collect()
 }
 
 pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-  let low_query = query.to_lowercase();
-  let mut temp: Vec<&str> = Vec::new();
-  for line in contents.lines() {
-    if line.to_lowercase().contains(&low_query) {
-      temp.push(line);
-    }
-  }
-  temp
+  contents.lines()
+    .filter(|line| {
+      line.to_lowercase().contains(&query.to_lowercase())
+    })
+    .collect()
 }

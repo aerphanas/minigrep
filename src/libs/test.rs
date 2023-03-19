@@ -1,4 +1,4 @@
-use super::*;
+use super::{ search, search_case_insensitive };
 
 #[test]
 fn case_sensitive() {
